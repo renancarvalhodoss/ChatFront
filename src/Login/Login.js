@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Redirect, Link } from 'react-router-dom';
 import Logo from '../images/logo1.png';
 import { URL } from '../variaveis';
@@ -10,6 +11,7 @@ const Login = () => {
     const [redirect, setredirect] = useState(false);
     const [path, setpath] = useState('');
     const [loading_save, setloading_save] = useState(false);
+    const dispatch = useDispatch();
 
     const Login = (e) => {
         e.preventDefault();
@@ -54,7 +56,16 @@ const Login = () => {
                     // resp.user.tipo_usuario.permissoes = permissoes;
                     localStorage.setItem('token', resp.access_token);
                     localStorage.setItem('user', JSON.stringify(resp.user));
-                    // this.props.login({ token: resp.access_token, user:resp.user });
+                    dispatch(
+                        {
+                            type: 'login',
+                            payload:
+                            {
+                                token: resp.access_token,
+                                user: resp.user
+                            }
+                        }
+                    )
                 }
             } catch (err) {
                 console.log(err);
@@ -79,7 +90,7 @@ const Login = () => {
             {!loading && <div className="row" style={{ backgroundColor: 'white', margin: 0 }}>
 
                 <div className="col-md-12 col-sm-12 col-12 col-lg-12 col-xl-12 d-block" style={{ overflow: 'hidden', backgroundSize: 'cover', padding: 0, margin: 0, height: '100vh' }}>
-                    <div className="row" style={{ minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <div className="row" style={{ minHeight: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center'  }}>
                         <div className="col-md-6 col-12 col-sm-12 col-lg-4 col-xl-4" style={{ margin: 0, padding: 0 }}>
                             <div className="card" style={{ margin: 0, maxWidth: 400 }}>
                                 <div className="card-body" style={{ paddingLeft: '1rem', paddingRight: '1rem' }}>
